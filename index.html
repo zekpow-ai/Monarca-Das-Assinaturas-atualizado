@@ -1,0 +1,1171 @@
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="MDA - Monarca Das Assinaturas - Zek e Sam" />
+  <title>MDA - Monarca Das Assinaturas - Zek e Sam</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+
+  <!-- Preconnects -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://i.ibb.co" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://connect.facebook.net" />
+
+  <!-- FONTES LOCAIS -->
+  <style>
+    @font-face {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('/fonts/roboto/roboto-regular.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url('/fonts/roboto/roboto-bold.woff2') format('woff2');
+    }
+  </style>
+
+  <!-- Tailwind Config (fonts) -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Roboto', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Config (cores, sombras, bg) -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            base: '#08121c',
+            card: '#0e1a2a',
+            edge: '#0b1522',
+            cyan: { 400: '#22d3ee', 500: '#06b6d4' },
+            brand: '#16b7ff',
+          },
+          boxShadow: {
+            glow: '0 0 0 1px rgba(56,189,248,0.25), 0 10px 30px rgba(2,132,199,0.25)'
+          },
+          backgroundImage: {
+            hero: "radial-gradient(1000px 600px at 60% 10%, rgba(34,211,238,0.15), transparent 60%), url('https://images.unsplash.com/...')"
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Estilos customizados -->
+  <style>
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-thumb { background: #0f2035; border-radius: 9999px; }
+
+    section {
+      margin: 0;
+      padding: 20px;
+      width: 100%;
+      max-width: none;
+      box-sizing: border-box;
+    }
+
+    @media (min-width: 1600px) {
+      section { width: 100%; padding-left: 20px; padding-right: 20px; }
+    }
+
+    @media (min-width: 2560px) {
+      body { display: block; }
+      section { width: 100%; margin: 0; }
+    }
+  </style>
+
+  <!-- Captura fbclid e cria cookie _fbc -->
+  <script>
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const fbclid = urlParams.get("fbclid");
+      if (fbclid) {
+        const fbc = "fb.1." + Date.now() + "." + fbclid;
+        document.cookie = "_fbc=" + fbc + "; path=/; max-age=" + 7776000 + "; Secure; SameSite=Lax";
+      }
+    })();
+  </script>
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+      t=b.createElement(e);t.async=!0;t.src=v;
+      s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)
+    }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '2239369116525127'); 
+    fbq('track', 'PageView', {}, {eventID: 'pageview_123'}); 
+  </script>
+
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=2239369116525127&ev=PageView&noscript=1"/>
+  </noscript>
+</head>
+
+
+
+
+  <body class="bg-base text-slate-100 antialiased selection:bg-cyan-500/20 selection:text-white">
+  <div id="topbar" 
+      style="background-color: red; color: white; text-align: center; padding: 12px; font-weight: bold; font-size: 16px;">
+  </div>
+
+  <script>
+    const hoje = new Date();
+    const diaAtual = hoje.getDate();
+    const mesAtual = hoje.toLocaleString("pt-BR", { month: "long" });
+    const anoAtual = hoje.getFullYear();
+
+    // pega os dois dias anteriores corretamente (mesmo em virada de mês)
+    const ontem = new Date(hoje);
+    ontem.setDate(diaAtual - 1);
+
+    const anteontem = new Date(hoje);
+    anteontem.setDate(diaAtual - 2);
+
+    const dias = [anteontem.getDate(), ontem.getDate(), diaAtual];
+
+  document.getElementById("topbar").innerHTML =
+    `Somente nos dias: <strong>${dias[0]}, ${dias[1]} e ${dias[2]} de ${mesAtual}</strong>: vagas quase esgotadas, garanta a sua!`;
+
+
+  </script>
+    <!-- ====== HERO ====== -->
+  <header class="relative overflow-hidden min-h-[70vh] sm:min-h-[75vh] lg:min-h-[50vh]">
+    <!-- Gradiente -->
+    <div class="absolute inset-0 bg-[radial-gradient(900px_500px_at_70%_0%,rgba(59,130,246,.18),transparent_60%)] pointer-events-none"></div>
+
+    <!-- Preload das imagens críticas -->
+    <link rel="preload" as="image" href="https://i.ibb.co/V0gwjRfF/Untitled-design-17.webp">
+    <link rel="preload" as="image" href="https://i.ibb.co/60VNpb3P/Untitled-design-20.webp">
+
+    <section class="relative isolate">
+      <!-- Imagem de fundo -->
+      <img loading="lazy" src="https://i.ibb.co/60VNpb3P/Untitled-design-20.webp" 
+      alt="Descrição da imagem" 
+      class="absolute inset-0 w-full h-full object-cover opacity-15"
+      fetchpriority="high"
+      loading="eager">
+
+      <!-- Conteúdo principal -->
+      <div class="container mx-auto max-w-6xl px-4 sm:px-6 pt-8 sm:pt-10 lg:pt-12 pb-12 sm:pb-16 lg:pb-24">
+        <div class="grid lg:grid-cols-2 gap-8 items-start">
+          
+          <!-- Texto e CTA -->
+          <div class="z-10">
+            <p class="text-xs tracking-widest uppercase text-cyan-400/80 mb-3">Oferta Exclusiva • Acesso Imediato</p>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
+              Pessoas comuns já estão faturando 
+              <span class="text-cyan-400 drop-shadow"><br>R$ 500 a R$ 2.000 por semana</span>  
+              e você ainda está de fora?
+            </h1>
+            <p class="mt-4 text-slate-300 max-w-prose">Sem aparecer, sem investir, começando do zero. O que você está esperando?</p>
+
+            <div class="mt-6 flex flex-col sm:flex-row sm:items-center gap-3">
+              <a href="https://pay.kiwify.com.br/7NpGNhh" target="_blank" rel="noopener noreferrer"
+   class="inline-flex items-center justify-center gap-2 rounded-full bg-cyan-500/90 hover:bg-cyan-500 px-6 py-3 font-semibold shadow-glow transition"
+   onclick="fbq('track', 'InitiateCheckout', {}, {eventID: 'checkout_btn4'}); sendToServer('InitiateCheckout','checkout_btn4')">
+   Quero Começar Hoje
+</a>
+            </div>
+          </div>
+
+          <!-- Imagem lateral -->
+          <div class="relative mx-auto w-full max-w-md">
+            <img
+              src="https://i.ibb.co/V0gwjRfF/Untitled-design-17.webp"
+              alt="Imagem livre"
+              class="isolate w-full h-auto mx-auto scale-110 sm:scale-110 md:scale-110 translate-y-10 sm:translate-y-12 md:translate-y-14 lg:translate-y-28"
+              style="mix-blend-mode: normal;"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </header>
+
+
+    <!-- ====== Seção Cards + Texto ====== -->
+    <section class="relative bg-[#0c111d] text-white overflow-visible">
+      <div class="container mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16 lg:py-20 relative z-0">
+        <div class="flex flex-col md:flex-row md:justify-between gap-10 relative z-0">
+
+          <!-- Texto -->
+          <div class="max-w-xl md:max-w-md transition-transform duration-300 translate-y-2 md:translate-y-6 mx-auto md:mx-0 text-center md:text-left">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
+              Uma estratégia tão poderosa que já mudou <br class="hidden md:block">a vida de centenas de pessoas comuns!
+            </h2>
+            <p class="text-[#FF7A00] text-sm mt-4">
+              Um sistema simples, 100% automático que transforma<br class="hidden sm:block">
+              seu celular em uma máquina de vender.
+            </p>
+
+            <!-- Avatares -->
+            <div class="mt-6 flex flex-wrap justify-center md:justify-start items-center gap-0">
+              <img loading="lazy" class="h-10 w-10 rounded-full object-cover ring-2 ring-white" src="https://images.unsplash.com/photo-1634983852158-996b99c1b26f?crop=faces&fit=crop&w=100&h=100" alt="Avatar 1"/>
+              <img loading="lazy" class="h-10 w-10 rounded-full object-cover ring-2 ring-white -ml-2" src="https://images.unsplash.com/photo-1652742887375-6ddb210d797e?crop=faces&fit=crop&w=100&h=100" alt="Avatar 2"/>
+              <img loading="lazy" class="h-10 w-10 rounded-full object-cover ring-2 ring-white -ml-2" src="https://images.unsplash.com/photo-1631885628726-d60689c330db?crop=faces&fit=crop&w=100&h=100" alt="Avatar 3"/>
+              <img loading="lazy" class="h-10 w-10 rounded-full object-cover ring-2 ring-white -ml-2" src="https://images.unsplash.com/photo-1640728422795-e620da751e13?crop=faces&fit=crop&w=100&h=100" alt="Avatar 4"/>
+              <span class="ml-3 text-sm text-[#FFEB7A] leading-tight mt-3 md:mt-0 block">
+              <br> Se 1.500+ alunos já começaram, O que você está esperando?
+              </span>
+            </div>
+          </div>
+
+          <!-- Grade dinâmica 4 cards (2x2 no mobile, 4 no lg) -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-5xl mx-auto relative z-10">
+    <!-- Card 1 - Vídeo -->
+    <div class="relative aspect-[9/16] max-h-[320px] sm:max-h-[340px] rounded-xl overflow-hidden shadow-xl -translate-y-2 sm:-translate-y-12 cursor-pointer"
+        onclick="openVideoModal('cTjr3kn2zw9')">
+    <img loading="lazy" src="https://d1ka0itfguscri.cloudfront.net/p20N/2025/08/21/22/40/cTjr3kn2zw9/preview.jpg"
+      class="absolute inset-0 w-full h-full object-cover rounded-xl" alt="" loading="lazy" />
+      <div class="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
+        <div class="h-14 w-14 flex items-center justify-center rounded-full bg-white/20 text-white">
+          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 - Imagem -->
+    <div class="relative aspect-[9/16] max-h-[320px] sm:max-h-[340px] rounded-xl overflow-hidden shadow-xl -translate-y-1 sm:-translate-y-9 cursor-pointer group"
+        onclick="openImageModal('https://i.ibb.co/4gKLytTy/Untitled-design-21.webp')">
+      <img loading="lazy" src="https://i.ibb.co/4gKLytTy/Untitled-design-21.webp" class="absolute inset-0 w-full h-full object-cover" alt="" loading="lazy"/>
+      <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity sm:opacity-100">
+        <div class="text-white text-sm sm:text-base font-semibold flex items-center space-x-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-4.553a1 1 0 0 0-1.414-1.414L13.586 8H9a1 1 0 1 0 0 2h4.586l4.553 4.553a1 1 0 0 0 1.414-1.414L15 10z"/></svg>
+          <span>Clique para ampliar</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 - Vídeo -->
+    <div class="relative aspect-[9/16] max-h-[320px] sm:max-h-[340px] rounded-xl overflow-hidden/Untitled-design-17.n shadow-xl -translate-y-2 sm:-translate-y-12 cursor-pointer"
+        onclick="openVideoModal('cTjr39n2zyA')">
+      <img loading="lazy" src="https://d1ka0itfguscri.cloudfront.net/p20N/2025/08/21/22/58/cTjr39n2zyA/preview.jpg"
+          class="absolute inset-0 w-full h-full object-cover rounded-xl" alt="" loading="lazy"/>
+      <div class="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
+        <div class="h-14 w-14 flex items-center justify-center rounded-full bg-white/20 text-white">
+          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 - Imagem -->
+    <div class="relative aspect-[9/16] max-h-[320px] sm:max-h-[340px] rounded-xl overflow-hidden shadow-xl -translate-y-1 sm:-translate-y-9 cursor-pointer group"
+        onclick="openImageModal('https://i.ibb.co/HD9857td/Untitled-design-22.webp')">
+      <img loading="lazy" src="https://i.ibb.co/HD9857td/Untitled-design-22.webp" class="absolute inset-0 w-full h-full object-cover" alt="" loading="lazy"/>
+      <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity sm:opacity-100">
+        <div class="text-white text-sm sm:text-base font-semibold flex items-center space-x-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-4.553a1 1 0 0 0-1.414-1.414L13.586 8H9a1 1 0 1 0 0 2h4.586l4.553 4.553a1 1 0 0 0 1.414-1.414L15 10z"/></svg>
+          <span>Clique para ampliar</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <!-- Modais globais -->
+<!-- Vídeo -->
+<div id="videoModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden p-4" role="dialog" aria-modal="true">
+  <div class="absolute inset-0" onclick="closeVideoModal()"></div>
+  <div class="relative w-full max-w-sm md:max-w-md lg:max-w-lg aspect-[9/16] max-h-[80vh] z-10 rounded-xl overflow-hidden bg-black">
+    <button onclick="closeVideoModal()" aria-label="Fechar modal de vídeo" class="absolute top-2 right-2 text-white text-3xl z-50">&times;</button>
+    <div id="modalPlayer" class="w-full h-full"></div>
+  </div>
+</div>
+
+<!-- Imagem -->
+<div id="imageModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true">
+  <div class="absolute inset-0" onclick="closeImageModal()"></div>
+  <div class="relative z-10 w-full h-full flex items-center justify-center">
+    <button onclick="closeImageModal()" aria-label="Fechar modal de imagem" class="absolute top-4 right-4 text-white text-4xl z-50">&times;</button>
+    <img loading="lazy" id="modalImage" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-xl" alt="Imagem em tamanho ampliado"/>
+  </div>
+</div>
+
+<script>
+  let lastFocusedElement = null;
+
+  function openVideoModal(id) {
+    lastFocusedElement = document.activeElement;
+
+    const container = document.getElementById('modalPlayer');
+    container.innerHTML = '';
+
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://go.screenpal.com/embed/${id}`;
+    iframe.title = "Player de vídeo";
+    iframe.width = "100%";
+    iframe.height = "100%";
+    iframe.allowFullscreen = true;
+    iframe.style.border = "0";
+
+    container.appendChild(iframe);
+
+    const modal = document.getElementById('videoModal');
+    modal.classList.remove('hidden');
+    modal.setAttribute('tabindex', '-1');
+    modal.focus();
+  }
+
+  function closeVideoModal() {
+    const modal = document.getElementById('videoModal');
+    modal.classList.add('hidden');
+    document.getElementById('modalPlayer').innerHTML = '';
+
+    if (lastFocusedElement) {
+      lastFocusedElement.focus();
+    }
+  }
+
+  function openImageModal(src, alt = "Imagem ampliada") {
+    lastFocusedElement = document.activeElement;
+
+    const img = document.getElementById('modalImage');
+    img.src = src;
+    img.alt = alt;
+
+    const modal = document.getElementById('imageModal');
+    modal.classList.remove('hidden');
+    modal.setAttribute('tabindex', '-1');
+    modal.focus();
+  }
+
+  function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.add('hidden');
+    document.getElementById('modalImage').src = '';
+
+    if (lastFocusedElement) {
+      lastFocusedElement.focus();
+    }
+  }
+</script>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Seção "Essa pode ser..." ====== -->
+    <section class="relative py-12 sm:py-16 lg:py-20">
+      <div class="text-center px-4">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF7A00]">
+          Essa pode ser só mais uma página que você fecha…
+        </h2>
+        <p class="mt-3 max-w-3xl mx-auto text-sm sm:text-base" style="color:#9CA3AF;">
+    Ou o instante em que você decide finalmente criar um negócio que trabalha sozinho para você, todos os dias, sem complicação.
+  </p>
+      </div>
+
+      <!-- Glow atrás -->
+      <div class="absolute inset-x-0 top-[180px] -z-10 h-[240px] bg-cyan-500/30 rounded-3xl blur-[90px]"></div>
+
+      <!-- Card principal -->
+      <div class="relative max-w-4xl mx-auto bg-[#0c111d] rounded-3xl p-5 sm:p-6 md:p-8 text-white shadow-lg mt-8">
+        <!-- Grid 3x2 -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Bloco 1 -->
+          <div class="text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-14 h-14 bg-slate-800 rounded-lg flex items-center justify-center shadow-[0_0_15px_#22d3ee]">
+                <svg class="w-7 h-7 text-cyan-400 drop-shadow-[0_0_10px_#22d3ee]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-[#FF7A00] mb-2">Liberdade total</h3>
+            <p class="text-sm text-gray-400 leading-relaxed px-2">
+              Trabalhe de onde quiser, no seu horário, sem depender de chefe ou rotina fixa. Seu negócio funciona sozinho e garante que você viva sem limites, aproveitando a vida que poucos têm coragem de conquistar.
+            </p>
+          </div>
+
+          <!-- Bloco 2 -->
+          <div class="text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-14 h-14 bg-slate-800 rounded-lg flex items-center justify-center shadow-[0_0_15px_#22d3ee]">
+                <svg class="w-7 h-7 text-cyan-400 drop-shadow-[0_0_10px_#22d3ee]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m0 0V3a1 1 0 011 1v11.586l2 2A1 1 0 0119 19H5a1 1 0 01-.707-1.707l2-2V4a1 1 0 011-1V2"></path>
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-[#FF7A00] mb-2">Viva a sua história de conquistas</h3>
+            <p class="text-sm text-gray-400 leading-relaxed px-2">
+              Cada escolha te coloca à frente. Mais autonomia, mais experiências incríveis, mais momentos que realmente importam — e que só você vai ter.
+            </p>
+          </div>
+
+          <!-- Bloco 3 -->
+          <div class="text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-14 h-14 bg-slate-800 rounded-lg flex items-center justify-center shadow-[0_0_15px_#22d3ee]">
+                <svg class="w-7 h-7 text-cyan-400 drop-shadow-[0_0_10px_#22d3ee]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <circle cx="12" cy="12" r="6"></circle>
+                  <circle cx="12" cy="12" r="2"></circle>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-[#FF7A00] mb-2">Máquina de vendas 24/7</h3>
+            <p class="text-sm text-gray-400 leading-relaxed px-2">
+              Aprenda a gerar receita automaticamente todos os dias, mesmo enquanto descansa, viaja ou se diverte. Ganhar dinheiro enquanto dorme deixa de ser sonho e vira rotina.
+            </p>
+          </div>
+
+          <!-- Bloco 4 -->
+          <div class="text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-14 h-14 bg-slate-800 rounded-lg flex items-center justify-center shadow-[0_0_15px_#22d3ee]">
+                <svg class="w-7 h-7 text-cyan-400 drop-shadow-[0_0_10px_#22d3ee]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-[#FF7A00] mb-2">Comece do zero, cresça sem limites</h3>
+            <p class="text-sm text-gray-400 leading-relaxed px-2">
+              Mesmo sem experiência, sem investir rios de dinheiro e sem aparecer, você terá um caminho claro para construir algo sólido, escalável e lucrativo, sem enrolação, sem fórmulas mágicas e sem depender de ninguém.
+            </p>
+          </div>
+
+          <!-- Bloco 5 -->
+          <div class="text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-14 h-14 bg-slate-800 rounded-lg flex items-center justify-center shadow-[0_0_15px_#22d3ee]">
+                <svg class="w-7 h-7 text-cyan-400 drop-shadow-[0_0_10px_#22d3ee]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-[#FF7A00] mb-2">Transforme seu negócio em um legado</h3>
+            <p class="text-sm text-gray-400 leading-relaxed px-2">
+              Cada estratégia aplicada constrói mais que lucro: cria estilo de vida, liberdade financeira e possibilidades reais de crescimento que vão impactar sua vida hoje e no futuro.
+            </p>
+          </div>
+
+          <!-- Bloco 6 -->
+          <div class="text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-14 h-14 bg-slate-800 rounded-lg flex items-center justify-center shadow-[0_0_15px_#22d3ee]">
+                <svg class="w-7 h-7 text-cyan-400 drop-shadow-[0_0_10px_#22d3ee]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-[#FF7A00] mb-2">Não é mais um curso qualquer</h3>
+            <p class="text-sm text-gray-400 leading-relaxed px-2">
+              Este não é aquele treinamento que te ensina 10% de teoria e 90% de distração. Aqui, você aprende a criar um negócio completo, escalável e automatizado, para que suas conquistas financeiras sejam reais e duradouras.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 3 FASES ====== -->
+  <section class="relative py-14">
+    <!-- Background limited width -->
+    <div class="absolute top-[180px] -z-10 h-[240px] w-full max-w-6xl mx-auto left-0 right-0 bg-cyan-500/30 rounded-3xl blur-[90px]"></div>
+
+    <div class="container mx-auto max-w-6xl px-4">
+      <!-- Imagem principal -->
+      <div class="mx-auto max-w-3xl mb-8">
+        <div class="relative aspect-[16/9] rounded-2xl overflow-hidden">
+          <img loading="lazy" class="absolute inset-0 h-full w-full object-cover" src="https://i.ibb.co/n887KPZw/Untitled-design-24.webp" alt="player"/>
+          <div class="absolute inset-0 flex justify-center items-center">
+            <div class="rounded-xl bg-white/5 backdrop-blur ring-1 ring-white/10 px-3 py-4 text-center w-[80%] sm:w-[70%] md:w-[60%]">
+              <h3 class="font-semibold text-white text-sm sm:text-base md:text-xl leading-snug relative z-10" style="color:#FF7A00;">
+  O que você vai receber em 3 fases
+  </h3>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Cards das fases -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto -mt-12 md:-mt-36 relative z-10 px-4">
+    <div class="rounded-xl bg-[#0c111d] p-4 sm:p-5 md:p-6 shadow-[0_10px_25px_rgba(0,255,255,0.2),0_5px_10px_rgba(0,0,0,0.2)] hover:shadow-[0_15px_35px_rgba(0,255,255,0.25),0_10px_20px_rgba(0,0,0,0.25)] transition-shadow duration-300">
+      <p class="text-[0.7rem] sm:text-xs text-cyan-400 mb-2">Fase 01</p>
+      <h4 class="font-semibold text-[#FF7A00] mb-2 sm:text-lg md:text-xl">Início Imediato</h4>
+      <p class="text-sm sm:text-[0.95rem] text-white">Como gerar suas primeiras vendas em poucos dias.</p>
+    </div>
+    <div class="rounded-xl bg-[#0c111d] p-4 sm:p-5 md:p-6 shadow-[0_10px_25px_rgba(0,255,255,0.2),0_5px_10px_rgba(0,0,0,0.2)] hover:shadow-[0_15px_35px_rgba(0,255,255,0.25),0_10px_20px_rgba(0,0,0,0.25)] transition-shadow duration-300">
+      <p class="text-[0.7rem] sm:text-xs text-cyan-400 mb-2">Fase 02</p>
+      <h4 class="font-semibold text-[#FF7A00] mb-2 sm:text-lg md:text-xl">Escala Automática</h4>
+      <p class="text-sm sm:text-[0.95rem] text-white">Como multiplicar resultados com inteligência e automação.</p>
+    </div>
+    <div class="rounded-xl bg-[#0c111d] p-4 sm:p-5 md:p-6 shadow-[0_10px_25px_rgba(0,255,255,0.2),0_5px_10px_rgba(0,0,0,0.2)] hover:shadow-[0_15px_35px_rgba(0,255,255,0.25),0_10px_20px_rgba(0,0,0,0.25)] transition-shadow duration-300">
+      <p class="text-[0.7rem] sm:text-xs text-cyan-400 mb-2">Fase 03</p>
+      <h4 class="font-semibold text-[#FF7A00] mb-2 sm:text-lg md:text-xl">Liberdade Digital</h4>
+      <p class="text-sm sm:text-[0.95rem] text-white">Como consolidar um negócio lucrativo e recorrente.</p>
+    </div>
+  </div>
+
+
+    <!-- CTA -->
+    <div class="text-center mt-8 px-4">
+   <a href="https://pay.kiwify.com.br/7NpGNhh" target="_blank" rel="noopener noreferrer"
+   class="inline-flex items-center gap-2 rounded-full bg-cyan-500/90 hover:bg-cyan-500 px-6 py-3 font-semibold shadow-glow transition"
+   onclick="fbq('track', 'InitiateCheckout', {}, {eventID: 'checkout_btn3'}); sendToServer('InitiateCheckout','checkout_btn3')">
+   Quero o Método Monarca
+</a>
+    <p class="text-xs text-slate-400 mt-2">
+    Por apenas 
+    <strong class="text-white">
+      6x de R$5,07
+    </strong>  
+    <br>
+    <strong>
+      ou R$27 à vista
+    </strong>  
+    <span class="text-red-500 font-semibold">
+      <br>• Vagas limitadas!
+    </span>
+  </p>
+
+  </div>
+
+
+    <!-- ====== SEÇÃO CATÁLOGO (Swiper) ====== -->
+    <section class="relative py-16">
+      <!-- Glow estático atrás do card -->
+      <div class="absolute top-[118px] left-[min(2rem,4vw)] w-[200px] h-[200px] rounded-full
+          bg-[radial-gradient(circle_at_center,_white_0%,_#01bfec_30%,_transparent_70%)]
+          blur-3xl opacity-80 z-0"></div>
+
+      <div class="container mx-auto max-w-6xl px-4">
+        <div class="md:flex md:items-center md:justify-between gap-8">
+          <!-- Coluna esquerda: texto -->
+          <div class="md:w-1/3 flex flex-col justify-center text-center md:text-left mb-6 md:mb-0">
+            <h2 class="text-2xl md:text-3xl font-bold">Do Absoluto Zero<br> ao Monarca das Assinaturas</h2>
+          </div>
+
+          <!-- Coluna direita: carrossel -->
+          <div class="md:w-2/3 relative">
+            <div class="swiper mySwiper">
+              <div class="swiper-wrapper">
+                <!-- Slides -->
+                <div class="swiper-slide rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge relative">
+                  <img loading="lazy" class="w-full h-64 sm:h-72 md:h-[340px] object-cover" src="https://i.ibb.co/MxKqYf6c/b213fd22-7772-485a-ae27-1efe0a6f797a.webp?q=80&w=800&auto=format&fit=crop" alt="poster"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3">
+                    <h3 class="font-semibold text-white text-sm sm:text-base relative z-10" style="color:#ffffff;">• Módulo 1 •</h3>
+                  </div>
+                </div>
+
+                <div class="swiper-slide rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge relative">
+                  <img loading="lazy" class="w-full h-64 sm:h-72 md:h-[340px] object-cover" src="https://i.ibb.co/tPw1WQXB/97e70804-2a6a-467b-927a-e96e3ca29723.webp?q=80&w=800&auto=format&fit=crop" alt="poster"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3">
+                    <h3 class="font-semibold text-white text-sm sm:text-base relative z-10" style="color:#ffffff;">•Módulo 2 •</h3>
+            
+                  </div>
+                </div>
+
+                <div class="swiper-slide rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge relative">
+                  <img loading="lazy" class="w-full h-64 sm:h-72 md:h-[340px] object-cover" src="https://i.ibb.co/DDmY9yRZ/5.webp?q=80&w=800&auto=format&fit=crop" alt="poster"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3">
+                  <h3 class="font-semibold text-white text-sm sm:text-base relative z-10" style="color:#ffffff;">•Módulo 3 •</h3>
+  
+                  </div>
+                </div>
+
+                <div class="swiper-slide rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge relative">
+                  <img loading="lazy" class="w-full h-64 sm:h-72 md:h-[340px] object-cover" src="https://i.ibb.co/TxYw6VZT/a1c7d0d0-52a4-4278-9aa4-cb93e3d67aaf.webp?q=80&w=800&auto=format&fit=crop" alt="poster"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3">
+                    <h3 class="font-semibold text-white text-sm sm:text-base relative z-10" style="color:#ffffff;">•Módulo 4 •</h3>
+          
+                  </div>
+                </div>
+
+                <div class="swiper-slide rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge relative">
+                  <img loading="lazy" class="w-full h-64 sm:h-72 md:h-[340px] object-cover" src="https://i.ibb.co/pjVQ9f84/41d71d8d-0bcc-42ae-a4cc-a876c43f98a1.webp?q=80&w=800&auto=format&fit=crop" alt="poster"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3">
+                    <h3 class="font-semibold text-white text-sm sm:text-base relative z-10" style="color:#ffffff;">•Módulo 5 •</h3>
+          
+                  </div>
+                </div>
+
+                <div class="swiper-slide rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge relative">
+                  <img loading="lazy" class="w-full h-64 sm:h-72 md:h-[340px] object-cover" src="https://i.ibb.co/nND7CwjC/6.webp?q=80&w=800&auto=format&fit=crop" alt="poster"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3">
+              <h3 class="font-semibold text-white text-sm sm:text-base relative z-10" style="color:#ffffff;">•Módulo 6 •</h3>
+                  
+                  </div>
+                </div>
+
+                <div class="swiper-slide rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge relative">
+                  <img loading="lazy" class="w-full h-64 sm:h-72 md:h-[340px] object-cover" src="https://i.ibb.co/yB5hC3Tx/8.webp?q=80&w=800&auto=format&fit=crop" alt="poster"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3">
+                    <h3 class="font-semibold text-white text-sm sm:text-base relative z-10" style="color:#ffffff;">•Módulo 7 •</h3>
+              
+                  </div>
+                </div>
+
+                <div class="swiper-slide rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge relative">
+                  <img loading="lazy" class="w-full h-64 sm:h-72 md:h-[340px] object-cover" src="https://i.ibb.co/CpG6tVNz/9.webp?q=80&w=800&auto=format&fit=crop" alt="poster"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3">
+                  <h3 class="font-semibold text-white text-sm sm:text-base relative z-10" style="color:#ffffff;">•Módulo 8 •</h3>
+            
+                  </div>
+                </div>
+
+                <div class="swiper-slide rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge relative">
+                  <img loading="lazy" class="w-full h-64 sm:h-72 md:h-[340px] object-cover" src="https://i.ibb.co/mCrdry8M/7.webp?q=80&w=800&auto=format&fit=crop" alt="poster"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3">
+              
+            
+                  </div>
+                </div>
+              </div>
+
+              <!-- Paginação e Navegação -->
+              <div class="flex justify-center items-center mt-4 space-x-4">
+                <div class="swiper-pagination !static"></div>
+              </div>
+              <div class="swiper-button-prev text-white"></div>
+              <div class="swiper-button-next text-white"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== NOVIDADES GRID ====== -->
+    <section class="relative py-6">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center gap-2 mb-6 justify-center">
+          <h2 class="text-2xl font-bold">Monarca Prime</h2>
+          <img loading="lazy" src="https://i.ibb.co/vxp00d8M/7641727.webp" alt="verificado" class="w-5 h-5 object-contain" />
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-5 max-w-5xl mx-auto">
+          <!-- card 1 -->
+          <article class="w-full sm:w-[320px] md:w-[360px] rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge">
+            <div class="relative">
+              <img loading="lazy" class="h-56 w-full object-cover" src="https://i.ibb.co/DDJJwYxZ/Copy-of-Untitled-607-x-607-px-360-x-224-px.webp?q=80&w=1200&auto=format&fit=crop" alt=""/>
+              <div class="absolute inset-0 bg-gradient-to-t from-base via-transparent"></div>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs text-cyan-300">MONARCA • O PONTO AZUL</p>
+                <h3 class="font-semibold">Estrategista do Invisível.</h3>
+                <p class="text-sm text-slate-300/80">Seja único onde todos parecem iguais — a chave para atrair atenção e autoridade.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- card 2 -->
+          <article class="w-full sm:w-[320px] md:w-[360px] rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge">
+            <div class="relative">
+              <img loading="lazy" class="h-56 w-full object-cover" src="https://i.ibb.co/YBKNmhSR/Copy-of-Untitled-607-x-607-px-360-x-224-px-1.webp?q=80&w=1200&auto=format&fit=crop" alt=""/>
+              <div class="absolute inset-0 bg-gradient-to-t from-base via-transparent"></div>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs text-cyan-300">MONARCA • SUPREMACIA</p>
+                <h3 class="font-semibold">O código dos anúncios milionários.</h3>
+                <p class="text-sm text-slate-300/80">Facebook Ads Versão 2025.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- card 3 -->
+          <article class="w-full sm:w-[320px] md:w-[360px] rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge">
+            <div class="relative">
+              <img loading="lazy" class="h-56 w-full object-cover" src="https://i.ibb.co/JR6vGtPY/Copy-of-Untitled-607-x-607-px-360-x-224-px-3.webp?q=80&w=1200&auto=format&fit=crop" alt=""/>
+              <div class="absolute inset-0 bg-gradient-to-t from-base via-transparent"></div>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs text-cyan-300">MONARCA • EXCLUSIVO</p>
+                <h3 class="font-semibold">Arrisquei e mudei o jogo.</h3>
+                <p class="text-sm text-slate-300/80">Sem decisões ousadas, não se alcança o extraordinário.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- card 4 -->
+          <article class="w-full sm:w-[320px] md:w-[360px] rounded-2xl overflow-hidden ring-1 ring-white/10 bg-edge">
+            <div class="relative">
+              <img loading="lazy" class="h-56 w-full object-cover" src="https://i.ibb.co/x8dd0YGY/Copy-of-Untitled-607-x-607-px-360-x-224-px-4.webp?q=80&w=1200&auto=format&fit=crop" alt=""/>
+              <div class="absolute inset-0 bg-gradient-to-t from-base via-transparent"></div>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs text-cyan-300">MONARCA • TÁTICAS</p>
+                <h3 class="font-semibold">O jogo da espionagem digital.</h3>
+                <p class="text-sm text-slate-300/80">Descubra como vigiar concorrentes e transformar fraquezas em lucro.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== PREÇO + SELO (Checkout) ====== -->
+    <section id="checkout" class="relative py-16">
+      <div class="absolute top-[178px] left-[8%] w-[200px] h-[200px] rounded-full
+          bg-[radial-gradient(circle_at_center,_white_0%,_#01bfec_30%,_transparent_70%)]
+          blur-3xl opacity-80 z-0"></div>
+
+      <div class="container mx-auto max-w-6xl px-4">
+        <div class="flex flex-col lg:flex-row gap-6 items-stretch justify-center">
+
+          <!-- preço -->
+          <div class="flex-1 min-w-[280px] max-w-[520px] rounded-2xl ring-1 ring-white/10 bg-[#0a1829] p-6 sm:p-8 shadow-[0_0_12px_#01a6f7] relative z-10">
+            <div class="flex justify-center mb-4">
+  <img loading="lazy" class="h-21 sm:h-48 w-auto" src="https://i.ibb.co/ynrYxGxT/Black-Yellow-Elegant-Modern-Letters-Logo-4.webp" alt="logo"/>
+            </div>
+        <div class="flex flex-col items-center text-center">
+    <p class="text-xs text-slate-400 mt-2">
+    Por apenas 
+    <strong class="text-white">
+      6x de R$5,07
+    </strong>  
+    <br>
+    <strong>
+      ou R$27 à vista
+    </strong>  
+    <span class="text-red-500 font-semibold">
+      <br>• Vagas limitadas!
+    </span>
+  </p>
+
+
+  </div>
+            <div class="flex justify-center mt-5">
+    <a href="https://pay.kiwify.com.br/7NpGNhh" target="_blank" rel="noopener noreferrer"
+   class="inline-flex items-center gap-2 rounded-full bg-cyan-500/90 hover:bg-cyan-500 px-6 py-3 font-semibold shadow-glow transition"
+   onclick="fbq('track', 'InitiateCheckout', {}, {eventID: 'checkout_btn2'}); sendToServer('InitiateCheckout','checkout_btn2')">
+   Quero Entrar Agora
+</a>
+  </div>
+
+            <!-- Avatares -->
+            <div class="mt-6 flex flex-wrap justify-center items-center">
+              <img loading="lazy" class="h-10 w-10 rounded-full object-cover ring-2 ring-white" src="https://images.unsplash.com/photo-1560787313-5dff3307e257?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Avatar 1"/>
+              <img loading="lazy" class="h-10 w-10 rounded-full object-cover ring-2 ring-white -ml-2" src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Avatar 2"/>
+              <img loading="lazy" class="h-10 w-10 rounded-full object-cover ring-2 ring-white -ml-2" src="https://images.unsplash.com/photo-1549351512-c5e12b11e283?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Avatar 3"/>
+              <img loading="lazy" class="h-10 w-10 rounded-full object-cover ring-2 ring-white -ml-2" src="https://images.unsplash.com/photo-1564564244660-5d73c057f2d2?q=80&w=876&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Avatar 4"/>
+              <span class="ml-3 text-sm text-slate-400 leading-tight mt-3 md:mt-0 block text-center md:text-left">
+                Se 1.500+ alunos já começaram,<br> O que você está esperando?
+              </span>
+            </div>
+          </div>
+
+          <!-- selo -->
+          <div class="flex-1 min-w-[280px] max-w-[520px] rounded-2xl ring-1 ring-white/10 bg-edge p-6 sm:p-8 grid place-items-center text-center relative">
+            <div class="scale-100 sm:scale-105 md:scale-110">
+              <div class="grid place-items-center gap-2">
+                <img loading="lazy" src="https://i.ibb.co/xK3G9mvd/Untitled-design-16.webp"
+                    class="h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48 -mt-2 sm:-mt-4 md:-mt-6"
+                    alt="selo"/>
+                <h3 class="font-extrabold text-white text-lg sm:text-xl md:text-2xl -mt-1 sm:-mt-2 md:-mt-4">
+                  Placa Monarca 100K
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-300/80 max-w-[260px] sm:max-w-sm leading-relaxed">
+          Ganhe enquanto constrói sua própria máquina de vendas e <br>alcança resultados reais.
+  Teste sem riscos por 7 dias: se não conseguir criar sua máquina, devolvemos 100% do seu investimento.
+  É simples: ou você cria sua máquina de vendas, ou não paga nada.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SOBRE / DEPOIMENTO ====== -->
+  <section class="relative py-12 bg-[#0a1729] text-white">
+  <div class="absolute inset-0 pointer-events-none"></div>
+
+
+    <div class="container relative mx-auto max-w-6xl px-4">
+      <div class="grid lg:grid-cols-2 gap-8 items-center">
+        
+        <!-- Left Content -->
+        <div class="relative z-10 p-4">
+          <h3 class="text-2xl md:text-3xl font-bold">Zek & Sam</h3>
+          <p class="mt-3 text-white/90 text-base leading-relaxed">
+            Somos irmãos gêmeos e criamos uma metodologia prática e direta que te ensina a vender de verdade e construir sua máquina de vendas — do zero ao status de Monarca — sem experiência, sem investir e sem precisar aparecer, usando apenas um celular.
+          </p>
+          <p class="mt-3 text-white/80 text-base leading-relaxed">
+            Juntos, mostramos como criar produtos, assinaturas e sistemas que faturam automaticamente, com estratégias testadas que realmente funcionam. Nesta formação, você terá passo a passo completo, acompanhamento estratégico e técnicas avançadas para crescer rápido, mesmo começando do zero.
+          </p>
+        </div>
+
+        <!-- Right Image -->
+        <div class="relative z-10 rounded-2xl overflow-hidden ring-1 ring-white/20 shadow-lg">
+          <img loading="lazy" 
+            class="h-64 sm:h-80 md:h-[380px] w-full object-cover object-center"
+            src="https://i.ibb.co/kVdL9Vn7/Untitled-607-x-607-px.webp?q=80&w=1600&auto=format&fit=crop"
+            alt="Thiago Finch"
+          />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+    <!-- ====== FAQ ====== -->
+    <section class="relative py-16">
+      <div class="container mx-auto max-w-5xl px-4">
+        <div class="text-center mb-8">
+          <h2 class="text-2xl md:text-3xl font-bold">Dúvidas Frequentes</h2>
+          <p class="text-slate-300/80">Clique para abrir as respostas</p>
+        </div>
+
+        <div class="space-y-3">
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4 open:shadow-inner">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">O que é o Monarca das Assinaturas?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">Treinamento prático para você criar sua própria <strong>máquina de vendas</strong>, vendendo produtos digitais e SaaS de forma recorrente e automática — do zero, sem precisar falar inglês e sem aparecer.</p>
+          </details>
+
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">É para iniciantes?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">Sim. O curso foi feito para quem começa do zero. Você recebe passo a passo claro, modelos prontos e suporte para avançar mesmo sem experiência.</p>
+          </details>
+
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">Preciso ter conhecimento técnico ou programar?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">Não. O método foca em ferramentas e processos simples. Você terá guias passo a passo — programação não é requisito. Não precisa ter experiência, não precisa aparecer.</p>
+          </details>
+
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">Preciso criar meu próprio produto?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">O foco do curso é te ensinar a <strong>criar produtos digitais e SaaS</strong> do zero. Se preferir, também pode começar como afiliado vendendo produtos já existentes — ambos os caminhos são válidos.</p>
+          </details>
+
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">Quanto tempo leva para ver resultados?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">Depende da sua dedicação, mas é comum ver os primeiros resultados nas primeiras semanas. O curso traz estratégias e automações para acelerar os ganhos.</p>
+          </details>
+
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">Preciso investir em ferramentas caras ou anúncios?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">Não. Ensinamos formas simples e acessíveis para montar sua máquina de vendas usando apenas o celular, sem precisar aparecer e sem grandes investimentos iniciais.</p>
+          </details>
+
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">Preciso aparecer ou gravar vídeos?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">Não. Todo o método foi pensado para funcionar sem você precisar mostrar o rosto ou falar inglês.</p>
+          </details>
+
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">E se eu não gostar ou não ver resultados?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">Você tem 7 dias para testar sem risco. Se não criar sua máquina de vendas, devolvemos 100% do valor pago, sem burocracia.</p>
+          </details>
+
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">Suporte e comunidade?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">Você terá acesso a um grupo exclusivo e suporte para tirar dúvidas, compartilhar resultados e acelerar sua execução.</p>
+          </details>
+
+          <details class="group rounded-xl bg-edge ring-1 ring-white/10 p-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3">
+              <span class="font-semibold">Como posso pagar?</span>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-3 text-slate-300/85">Aceitamos pagamento à vista ou parcelado no cartão. Você pode pagar <strong>6x de R$5,07</strong> ou <strong>R$27 à vista</strong> — desconto especial para as primeiras inscrições. O pagamento é seguro e é processado diretamente pelo site.</p>
+          </details>
+        </div>
+
+    
+      </div>
+    <div class="flex justify-center">
+    <a href="https://pay.kiwify.com.br/7NpGNhh" target="_blank" rel="noopener noreferrer"
+   class="mt-5 inline-flex items-center gap-2 rounded-full bg-cyan-500/90 hover:bg-cyan-500 px-6 py-3 font-semibold shadow-glow transition"
+   onclick="fbq('track', 'InitiateCheckout', {}, {eventID: 'checkout_btn5'}); sendToServer('InitiateCheckout','checkout_btn5')">
+   Garantir Minha Vaga
+</a>
+  </div>
+  <div class="flex flex-col items-center text-center">
+  <p class="text-xs text-slate-400 mt-2">
+    Por apenas 
+    <strong class="text-white">
+      6x de R$5,07
+    </strong>  
+    <br>
+    <strong>
+      ou R$27 à vista
+    </strong>  
+    <span class="text-red-500 font-semibold">
+      <br>• Vagas limitadas!
+    </span>
+  </p>
+
+  </div>
+    </section>
+
+    <!-- ====== Scripts ====== -->
+    <script>
+      // Modais de vídeo/imagem
+      function openVideoModal(id) {
+        const container = document.getElementById('modalPlayer');
+        container.innerHTML = '';
+        const iframe = document.createElement('iframe');
+        iframe.width = '100%';
+        iframe.height = '100%';
+        iframe.style.border = '0';
+        iframe.scrolling = 'no';
+        iframe.allowFullscreen = true;
+        iframe.src = `https://go.screenpal.com/player/${id}?autoplay=1&controls=1&share=1&download=1&embed=1&width=1280&height=720&overlays=1&ff=1`;
+        container.appendChild(iframe);
+        document.getElementById('videoModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeVideoModal() {
+        const container = document.getElementById('modalPlayer');
+        container.innerHTML = '';
+        document.getElementById('videoModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+      function openImageModal(src) {
+        const img = document.getElementById('modalImage');
+        img.src = src;
+        document.getElementById('imageModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeImageModal() {
+        document.getElementById('imageModal').classList.add('hidden');
+        document.getElementById('modalImage').src = '';
+        document.body.style.overflow = 'auto';
+      }
+
+      // Suave scroll para CTA
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          const href=a.getAttribute('href');
+          if(href && href.length>1){
+            e.preventDefault();
+            document.querySelector(href)?.scrollIntoView({behavior:'smooth'});
+          }
+        })
+      });
+
+      // Swiper unificado
+      const swiper = new Swiper(".mySwiper", {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+          dynamicBullets: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+          640: { slidesPerView: 2, spaceBetween: 20 },
+          1024:{ slidesPerView: 3, spaceBetween: 24 },
+        },
+      });
+      
+    </script>
+  <footer style="background:#0B1522; padding:15px 20px; text-align:center; font-size:12px; color:#555; line-height:1.5;">
+    <p>
+      Este site não é afiliado ao Facebook ou a qualquer entidade do Facebook.  
+      As informações apresentadas nesta página e nos produtos oferecidos não garantem resultados.  
+      Resultados individuais podem variar e dependem do esforço de cada pessoa.
+    </p>
+    <p>
+      Não vendemos seu e-mail ou qualquer informação para terceiros.  
+      Jamais fazemos spam. Para dúvidas, entre em contato conosco em horário comercial.
+    </p>
+    <p>
+      Política de Privacidade: coletamos apenas dados necessários para processar seu pedido e oferecer suporte.  
+      Termos de Uso: todo o conteúdo é informativo; você deve aplicar as informações de acordo com seu próprio julgamento.
+    </p>
+    <p>
+    <br> © 2025 Monarca Das Assinaturas • Todos os direitos reservados • Termos e Privacidade
+    </p>
+  </footer>
+  <!-- Scripts principais -->
+  <script src="script.js" defer></script>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+  <!-- Inicialização Swiper + WebP Detection -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Inicializa Swiper
+    const swiper = new Swiper('.mySwiper', {
+      slidesPerView: 1.2,
+      spaceBetween: 16,
+      loop: false,
+      breakpoints: {
+        640: { slidesPerView: 2.5 },
+        1024: { slidesPerView: 3.5 },
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+
+    // Detecta suporte WebP
+    const supportsWebP = (() => {
+      try {
+        return document.createElement('canvas')
+          .toDataURL('image/webp')
+          .indexOf('data:image/webp') === 0;
+      } catch (e) {
+        return false;
+      }
+    })();
+
+    if (supportsWebP) {
+      document.querySelectorAll('img').forEach(img => {
+        const webpSrc = img.src.replace(/\.(jpe?g|png)$/i, '.webp');
+        fetch(webpSrc, { method: 'HEAD' })
+          .then(res => { if (res.ok) img.src = webpSrc; })
+          .catch(() => {});
+      });
+    }
+  });
+  </script>
+
+  <!-- Função utilitária para cookies + envio de eventos -->
+  <script>
+  // Lê cookies
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+
+  // Envia evento para backend (CAPI)
+  function sendToServer(eventName, eventId) {
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
+
+    if (!fbp) {
+      console.warn(`⚠️ Cookie _fbp não encontrado. Evento ${eventName} não enviado.`);
+      return;
+    }
+
+    const payload = {
+      event: eventName,
+      event_id: eventId,
+      fbp,
+      ...(fbc ? { fbc } : {}),
+      event_source_url: window.location.href,
+      client_user_agent: navigator.userAgent,
+      screen_width: window.screen.width,
+      screen_height: window.screen.height,
+      language: navigator.language,
+      timezone_offset: new Date().getTimezoneOffset(),
+    };
+
+    fetch('https://nextjs-boilerplate-phi-rouge-wdj2lsryyo.vercel.app/api/eventos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => console.log(`✅ Evento ${eventName} enviado com sucesso:`, data))
+    .catch(err => console.error(`❌ Erro ao enviar evento ${eventName}:`, err));
+  }
+  </script>
+
+  <!-- PageView inicial -->
+  <script>
+  (() => {
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
+
+    if (!fbp) {
+      console.warn('⚠️ Cookie _fbp não encontrado. Evento PageView não enviado.');
+      return;
+    }
+
+    const payload = { event: 'PageView', fbp };
+    if (fbc) payload.fbc = fbc;
+
+    console.log('Enviando PageView para API Vercel...', payload);
+
+    fetch('https://nextjs-boilerplate-phi-rouge-wdj2lsryyo.vercel.app/api/eventos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => console.log('✅ PageView enviado com sucesso:', data))
+    .catch(err => console.error('❌ Erro ao enviar PageView:', err));
+  })();
+  </script>
+
+
+
+
+  </body>
+  </html>

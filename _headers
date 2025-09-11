@@ -1,0 +1,52 @@
+# ===============================
+# Cabeçalhos de segurança
+# ===============================
+
+# Segurança para todas as URLs
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer-when-downgrade
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# ===============================
+# Cache para arquivos estáticos
+# ===============================
+
+# CSS
+/*.css
+  Cache-Control: public, max-age=31536000
+
+# JavaScript
+/*.js
+  Cache-Control: public, max-age=31536000
+
+# PNG
+/*.png
+  Cache-Control: public, max-age=31536000
+
+# JPG
+/*.jpg
+  Cache-Control: public, max-age=31536000
+
+# WebP
+/*.webp
+  Cache-Control: public, max-age=31536000
+
+# SVG
+/*.svg
+  Cache-Control: public, max-age=31536000
+
+# ===============================
+# Prefetch / Preload recursos críticos (opcional)
+# ===============================
+/styles/main.css
+  Link: </styles/main.css>; rel=preload; as=style
+
+/scripts/main.js
+  Link: </scripts/main.js>; rel=preload; as=script
+
+# ===============================
+# Compressão Brotli (opcional)
+# ===============================
+/*

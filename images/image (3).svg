@@ -1,0 +1,6 @@
+<svg class="w-7 h-7 text-cyan-400 drop-shadow-[0_0_10px_#22d3ee]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m0 0V3a1 1 0 011 1v11.586l2 2A1 1 0 0119 19H5a1 1 0 01-.707-1.707l2-2V4a1 1 0 011-1V2"></path>
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
