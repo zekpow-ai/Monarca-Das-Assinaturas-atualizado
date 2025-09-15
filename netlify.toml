@@ -1,9 +1,9 @@
 [build]
-  publish = "."                   # Serve arquivos da raiz
-  command = "echo 'No build needed'"
+  publish = "."                  # Serve arquivos da raiz
+  command = "echo 'No build needed'"  # Nenhuma build é necessária
 
 [functions]
-  directory = "netlify/functions"
+  directory = "netlify/functions"      # Pasta das funções Netlify
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "20"                   # Versão Node para funções
