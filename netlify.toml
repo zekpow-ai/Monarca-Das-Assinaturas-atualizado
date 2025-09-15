@@ -10,7 +10,7 @@
 # Variáveis de Ambiente
 # ------------------------------
 [build.environment]
-  NODE_VERSION = "20"            # Define a versão do Node para funções Lambda
+  NODE_VERSION = "18"
   # Variáveis sensíveis como FB_PIXEL_ID e FB_ACCESS_TOKEN
   # devem ser adicionadas no painel do Netlify:
   # Site settings → Environment → Environment Variables
