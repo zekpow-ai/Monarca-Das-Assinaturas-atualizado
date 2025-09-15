@@ -1,0 +1,33 @@
+# ------------------------------
+# Configuração de Build
+# ------------------------------
+[build]
+  publish = "."                     # Serve arquivos da raiz
+  command = "echo 'No build needed'"
+
+[functions]
+  directory = "netlify/functions"   # Pasta de funções Netlify
+
+# ------------------------------
+# Variáveis de ambiente
+# ------------------------------
+[build.environment]
+  NODE_VERSION = "20"
+
+# ------------------------------
+# Headers globais
+# ------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"

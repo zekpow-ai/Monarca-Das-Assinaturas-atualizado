@@ -8,15 +8,14 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Builds/outputs de frameworks que não usamos mais
+# Builds antigos
 .next/
+out/
 dist/
 
-# Configurações locais de Netlify
+# Netlify local
 .netlify/
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
