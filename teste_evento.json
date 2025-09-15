@@ -1,0 +1,17 @@
+{
+  "event": "Purchase",
+  "value": 37.90,
+  "currency": "BRL",
+  "contents": [
+    {
+      "id": "produto_123",
+      "quantity": 1,
+      "item_price": 37.90
+    }
+  ],
+  "fbp": "fb.1.1756353178510.380757131142998228",
+  "fbc": "fb.1.1756785149915.fbclid",
+  "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+  "client_ip_address": "123.123.123.123",
+  "event_id": "purchase_001"
+}
