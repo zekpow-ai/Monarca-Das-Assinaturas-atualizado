@@ -11,8 +11,7 @@
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.13.2",
     "fetch-blob": "^4.0.0",
-    "formdata-polyfill": "^4.0.10",
-    "node-fetch": "^3.3.2"
+    "formdata-polyfill": "^4.0.10"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",

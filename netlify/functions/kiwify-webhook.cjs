@@ -1,5 +1,4 @@
 const crypto = require("crypto");
-const fetch = require("node-fetch");
 
 const KIWIFY_SECRET = process.env.KIWIFY_SECRET;
 const FB_PIXEL_ID = process.env.FB_PIXEL_ID;
