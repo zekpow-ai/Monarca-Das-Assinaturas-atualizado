@@ -6,13 +6,11 @@ const FB_PIXEL_ID = process.env.FB_PIXEL_ID;
 const ACCESS_TOKEN = process.env.FB_ACCESS_TOKEN;
 const TEST_EVENT_CODE = process.env.NEXT_PUBLIC_FB_TEST_CODE;
 
-// Função de hash SHA256
 function hashSHA256(value) {
   if (!value) return undefined;
   return crypto.createHash("sha256").update(value.toString().trim().toLowerCase()).digest("hex");
 }
 
-// Validação da assinatura
 function validateSignature(signature, order) {
   try {
     const payload = JSON.stringify(order);
@@ -32,10 +30,7 @@ exports.handler = async (event) => {
   console.log("Body:", event.body);
 
   if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ success: false, error: "Método não permitido" })
-    };
+    return { statusCode: 200, body: JSON.stringify({ success: false, error: "Método não permitido" }) };
   }
 
   let bodyData = {};
@@ -46,18 +41,16 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Corpo inválido" }) };
   }
 
-  // Pegando signature do body ou header
   const signature = bodyData.signature || event.headers["x-signature"];
-  // Se não houver "order", assume que o próprio body é o order
-  const order = bodyData.order || bodyData;
+  const order = bodyData.order || bodyData; // Aceita o próprio body como order
 
-  if (!signature || !order.order_id) {
-    console.error("Payload inválido: falta signature ou order_id");
+  if (!order || !order.order_id) {
+    console.error("Payload inválido: falta order ou order_id");
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Payload inválido" }) };
   }
 
-  // Validar assinatura
-  if (!validateSignature(signature, order)) {
+  // Não bloqueia se não tiver signature, só loga
+  if (signature && !validateSignature(signature, order)) {
     console.error("Assinatura inválida");
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Assinatura inválida" }) };
   }
@@ -72,25 +65,21 @@ exports.handler = async (event) => {
   const moeda = commissions.product_base_price_currency || "BRL";
   const id = order.order_id;
 
-  const contents = [
-    { id: product.product_id, quantity: 1, item_price: valor }
-  ];
+  const contents = [{ id: product.product_id, quantity: 1, item_price: valor }];
 
   const eventData = {
-    data: [
-      {
-        event_name: "Purchase",
-        event_time: Math.floor(Date.now() / 1000),
-        event_source_url: "https://monarcadasassinaturas.com",
-        action_source: "website",
-        event_id: id,
-        user_data: {
-          ...(email ? { em: hashSHA256(email) } : {}),
-          ...(phone ? { ph: hashSHA256(phone) } : {}),
-        },
-        custom_data: { currency: moeda, value: valor, contents, content_type: "product" }
-      }
-    ],
+    data: [{
+      event_name: "Purchase",
+      event_time: Math.floor(Date.now() / 1000),
+      event_source_url: "https://monarcadasassinaturas.com",
+      action_source: "website",
+      event_id: id,
+      user_data: {
+        ...(email ? { em: hashSHA256(email) } : {}),
+        ...(phone ? { ph: hashSHA256(phone) } : {})
+      },
+      custom_data: { currency: moeda, value: valor, contents, content_type: "product" }
+    }],
     ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {})
   };
 
