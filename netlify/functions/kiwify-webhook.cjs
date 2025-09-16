@@ -6,11 +6,13 @@ const FB_PIXEL_ID = process.env.FB_PIXEL_ID;
 const ACCESS_TOKEN = process.env.FB_ACCESS_TOKEN;
 const TEST_EVENT_CODE = process.env.NEXT_PUBLIC_FB_TEST_CODE;
 
+// Função para hash SHA256 de email/telefone
 function hashSHA256(value) {
   if (!value) return undefined;
   return crypto.createHash("sha256").update(value.toString().trim().toLowerCase()).digest("hex");
 }
 
+// Função para validar assinatura enviada pelo Kiwify
 function validateSignature(signature, order) {
   const payload = JSON.stringify(order);
   const expected = crypto.createHmac("sha1", KIWIFY_SECRET).update(payload).digest("hex");
@@ -28,20 +30,29 @@ exports.handler = async (event) => {
 
   if (event.httpMethod !== "POST") return { statusCode: 405, body: "Método não permitido" };
 
-  let bodyData;
+  // ✅ Parse seguro do body, lidando com string ou objeto
+  let bodyData = {};
   try {
-    bodyData = JSON.parse(event.body);
+    if (typeof event.body === "string") {
+      bodyData = JSON.parse(event.body);
+    } else {
+      bodyData = event.body; // já é objeto
+    }
   } catch (err) {
     console.error("Erro ao parsear JSON:", err);
     return { statusCode: 400, body: "Corpo inválido" };
   }
 
-  const { signature, order } = bodyData;
+  // Pegando signature e order
+  const signature = bodyData.signature || event.headers["x-signature"];
+  const order = bodyData.order;
+
   if (!signature || !order) {
     console.error("Payload inválido: falta signature ou order");
     return { statusCode: 400, body: "Payload inválido" };
   }
 
+  // 🔐 Validação de assinatura
   if (!validateSignature(signature, order)) {
     console.error("Assinatura inválida, rejeitando webhook");
     return { statusCode: 403, body: "Assinatura inválida" };
@@ -54,7 +65,7 @@ exports.handler = async (event) => {
 
   const email = customer.email;
   const phone = customer.mobile;
-  const valor = (commissions.charge_amount || 0) / 100;
+  const valor = (commissions.charge_amount || 0) / 100; // converte centavos para reais
   const moeda = commissions.product_base_price_currency || "BRL";
   const id = order.order_id;
 
