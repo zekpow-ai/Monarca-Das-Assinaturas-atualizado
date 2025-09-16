@@ -1,5 +1,7 @@
 const crypto = require("crypto");
+const fetch = require("node-fetch"); // garante fetch no Netlify
 
+// Variáveis de ambiente
 const KIWIFY_SECRET = process.env.KIWIFY_SECRET;
 const FB_PIXEL_ID = process.env.FB_PIXEL_ID;
 const ACCESS_TOKEN = process.env.FB_ACCESS_TOKEN;
@@ -14,13 +16,13 @@ function hashSHA256(value) {
     .digest("hex");
 }
 
-// Validação da assinatura
+// Validação da assinatura enviada pela Kiwify
 function validateSignature(signature, order) {
-  if (!signature) return true; // se não houver, passa
+  if (!signature) return true; // passa se não vier assinatura
   try {
     const payload = JSON.stringify(order);
     const expected = crypto
-      .createHmac("sha1", KIWIFY_SECRET)
+      .createHmac("sha256", KIWIFY_SECRET) // corrigido para sha256
       .update(payload)
       .digest("hex");
 
@@ -82,7 +84,7 @@ exports.handler = async (event) => {
     };
   }
 
-  // Extrair dados
+  // Extrair dados relevantes
   const customer = order.Customer || {};
   const product = order.Product || {};
   const commissions = order.Commissions || {};
@@ -124,6 +126,8 @@ exports.handler = async (event) => {
     ],
     ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {}),
   };
+
+  console.log("Payload enviado ao Facebook:", JSON.stringify(eventData, null, 2));
 
   try {
     const res = await fetch(
