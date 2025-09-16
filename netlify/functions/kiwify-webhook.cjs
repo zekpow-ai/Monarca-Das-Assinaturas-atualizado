@@ -33,23 +33,21 @@ exports.handler = async (event) => {
 
   if (event.httpMethod !== "POST") {
     console.error("Método não permitido:", event.httpMethod);
-    return { statusCode: 200, body: JSON.stringify({ success: false, error: "Método não permitido" }) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: false, error: "Método não permitido" })
+    };
   }
 
   // Parsing seguro
   let bodyData = {};
   try {
-    if (typeof event.body === "string") {
-      bodyData = JSON.parse(event.body);
-    } else {
-      bodyData = event.body;
-    }
+    bodyData = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
   } catch (err) {
     console.error("Erro ao parsear JSON:", err);
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Corpo inválido" }) };
   }
 
-  // Pegando signature do body ou do header
   const signature = bodyData.signature || event.headers["x-signature"];
   const order = bodyData.order;
 
@@ -64,7 +62,6 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Assinatura inválida" }) };
   }
 
-  // Dados do pedido
   const customer = order.Customer || {};
   const product = order.Product || {};
   const commissions = order.Commissions || {};
@@ -83,7 +80,6 @@ exports.handler = async (event) => {
     },
   ];
 
-  // Montar evento para Facebook
   const eventData = {
     data: [
       {
@@ -107,7 +103,6 @@ exports.handler = async (event) => {
     ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {}),
   };
 
-  // Envio para Facebook Pixel
   try {
     const res = await fetch(
       `https://graph.facebook.com/v18.0/${FB_PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`,
