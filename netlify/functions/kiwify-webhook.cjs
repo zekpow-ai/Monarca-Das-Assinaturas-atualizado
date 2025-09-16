@@ -6,20 +6,28 @@ const FB_PIXEL_ID = process.env.FB_PIXEL_ID;
 const ACCESS_TOKEN = process.env.FB_ACCESS_TOKEN;
 const TEST_EVENT_CODE = process.env.NEXT_PUBLIC_FB_TEST_CODE;
 
-// Função de hash SHA256
+// Função hash SHA256 para Meta Ads
 function hashSHA256(value) {
   if (!value) return undefined;
-  return crypto.createHash("sha256").update(value.toString().trim().toLowerCase()).digest("hex");
+  return crypto
+    .createHash("sha256")
+    .update(value.toString().trim().toLowerCase())
+    .digest("hex");
 }
 
-// Validação da assinatura (opcional)
+// Validação da assinatura
 function validateSignature(signature, order) {
-  if (!signature) return true; // sem assinatura, passa
+  if (!signature) return true; // se não houver, passa
   try {
     const payload = JSON.stringify(order);
-    const expected = crypto.createHmac("sha1", KIWIFY_SECRET).update(payload).digest("hex");
+    const expected = crypto
+      .createHmac("sha1", KIWIFY_SECRET)
+      .update(payload)
+      .digest("hex");
+
     console.log("Signature recebido:", signature);
     console.log("Signature esperado:", expected);
+
     return signature === expected;
   } catch (err) {
     console.error("Erro na validação da signature:", err);
@@ -30,36 +38,52 @@ function validateSignature(signature, order) {
 exports.handler = async (event) => {
   console.log("=== Webhook Kiwify recebido ===");
   console.log("Headers:", event.headers);
-  console.log("Body:", event.body);
 
   if (event.httpMethod !== "POST") {
-    return { statusCode: 200, body: JSON.stringify({ success: false, error: "Método não permitido" }) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: false, error: "Método não permitido" }),
+    };
   }
 
   let bodyData = {};
   try {
-    bodyData = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    bodyData =
+      typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    console.log("Body parseado:", bodyData);
   } catch (err) {
     console.error("Erro ao parsear JSON:", err);
-    return { statusCode: 200, body: JSON.stringify({ success: false, error: "Corpo inválido" }) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: false, error: "Corpo inválido" }),
+    };
   }
 
-  // Pega order
+  // Se vier no formato { order, signature }
   const order = bodyData.order || bodyData;
-  const signature = bodyData.signature || event.headers["x-signature"];
+  const signature =
+    bodyData.signature ||
+    event.headers["x-signature"] ||
+    event.headers["X-Signature"];
 
   if (!order) {
     console.error("Payload inválido: falta order");
-    return { statusCode: 200, body: JSON.stringify({ success: false, error: "Payload inválido" }) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: false, error: "Payload inválido" }),
+    };
   }
 
-  // Valida assinatura se existir
+  // Valida assinatura
   if (!validateSignature(signature, order)) {
     console.error("Assinatura inválida");
-    return { statusCode: 200, body: JSON.stringify({ success: false, error: "Assinatura inválida" }) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: false, error: "Assinatura inválida" }),
+    };
   }
 
-  // Dados do pedido
+  // Extrair dados
   const customer = order.Customer || {};
   const product = order.Product || {};
   const commissions = order.Commissions || {};
@@ -78,7 +102,7 @@ exports.handler = async (event) => {
     },
   ];
 
-  // Montar evento para Facebook Pixel
+  // Montar evento para Facebook Pixel (CAPI)
   const eventData = {
     data: [
       {
@@ -102,7 +126,6 @@ exports.handler = async (event) => {
     ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {}),
   };
 
-  // Envio para Facebook Pixel
   try {
     const res = await fetch(
       `https://graph.facebook.com/v18.0/${FB_PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`,
@@ -118,6 +141,6 @@ exports.handler = async (event) => {
     console.error("Erro ao enviar para Facebook:", err);
   }
 
-  console.log("Webhook processado, retornando 200 para Kiwify");
+  console.log("Webhook processado com sucesso ✅");
   return { statusCode: 200, body: JSON.stringify({ success: true }) };
 };
