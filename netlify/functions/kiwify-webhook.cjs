@@ -12,8 +12,9 @@ function hashSHA256(value) {
   return crypto.createHash("sha256").update(value.toString().trim().toLowerCase()).digest("hex");
 }
 
-// Validação da assinatura
+// Validação da assinatura (opcional)
 function validateSignature(signature, order) {
+  if (!signature) return true; // sem assinatura, passa
   try {
     const payload = JSON.stringify(order);
     const expected = crypto.createHmac("sha1", KIWIFY_SECRET).update(payload).digest("hex");
@@ -32,11 +33,9 @@ exports.handler = async (event) => {
   console.log("Body:", event.body);
 
   if (event.httpMethod !== "POST") {
-    console.error("Método não permitido:", event.httpMethod);
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Método não permitido" }) };
   }
 
-  // Parsing seguro
   let bodyData = {};
   try {
     bodyData = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
@@ -45,16 +44,16 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Corpo inválido" }) };
   }
 
-  // Pegando signature do body ou do header
+  // Pega order
+  const order = bodyData.order || bodyData;
   const signature = bodyData.signature || event.headers["x-signature"];
-  const order = bodyData.order;
 
-  if (!signature || !order) {
-    console.error("Payload inválido: falta signature ou order");
+  if (!order) {
+    console.error("Payload inválido: falta order");
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Payload inválido" }) };
   }
 
-  // Validar assinatura
+  // Valida assinatura se existir
   if (!validateSignature(signature, order)) {
     console.error("Assinatura inválida");
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Assinatura inválida" }) };
@@ -79,7 +78,7 @@ exports.handler = async (event) => {
     },
   ];
 
-  // Montar evento para Facebook
+  // Montar evento para Facebook Pixel
   const eventData = {
     data: [
       {
