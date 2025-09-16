@@ -6,11 +6,13 @@ const FB_PIXEL_ID = process.env.FB_PIXEL_ID;
 const ACCESS_TOKEN = process.env.FB_ACCESS_TOKEN;
 const TEST_EVENT_CODE = process.env.NEXT_PUBLIC_FB_TEST_CODE;
 
+// Função de hash SHA256
 function hashSHA256(value) {
   if (!value) return undefined;
   return crypto.createHash("sha256").update(value.toString().trim().toLowerCase()).digest("hex");
 }
 
+// Validação da assinatura
 function validateSignature(signature, order) {
   try {
     const payload = JSON.stringify(order);
@@ -30,9 +32,11 @@ exports.handler = async (event) => {
   console.log("Body:", event.body);
 
   if (event.httpMethod !== "POST") {
+    console.error("Método não permitido:", event.httpMethod);
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Método não permitido" }) };
   }
 
+  // Parsing seguro
   let bodyData = {};
   try {
     bodyData = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
@@ -41,20 +45,22 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Corpo inválido" }) };
   }
 
+  // Pegando signature do body ou do header
   const signature = bodyData.signature || event.headers["x-signature"];
-  const order = bodyData.order || bodyData; // Aceita o próprio body como order
+  const order = bodyData.order;
 
-  if (!order || !order.order_id) {
-    console.error("Payload inválido: falta order ou order_id");
+  if (!signature || !order) {
+    console.error("Payload inválido: falta signature ou order");
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Payload inválido" }) };
   }
 
-  // Não bloqueia se não tiver signature, só loga
-  if (signature && !validateSignature(signature, order)) {
+  // Validar assinatura
+  if (!validateSignature(signature, order)) {
     console.error("Assinatura inválida");
     return { statusCode: 200, body: JSON.stringify({ success: false, error: "Assinatura inválida" }) };
   }
 
+  // Dados do pedido
   const customer = order.Customer || {};
   const product = order.Product || {};
   const commissions = order.Commissions || {};
@@ -65,28 +71,47 @@ exports.handler = async (event) => {
   const moeda = commissions.product_base_price_currency || "BRL";
   const id = order.order_id;
 
-  const contents = [{ id: product.product_id, quantity: 1, item_price: valor }];
+  const contents = [
+    {
+      id: product.product_id,
+      quantity: 1,
+      item_price: valor,
+    },
+  ];
 
+  // Montar evento para Facebook
   const eventData = {
-    data: [{
-      event_name: "Purchase",
-      event_time: Math.floor(Date.now() / 1000),
-      event_source_url: "https://monarcadasassinaturas.com",
-      action_source: "website",
-      event_id: id,
-      user_data: {
-        ...(email ? { em: hashSHA256(email) } : {}),
-        ...(phone ? { ph: hashSHA256(phone) } : {})
+    data: [
+      {
+        event_name: "Purchase",
+        event_time: Math.floor(Date.now() / 1000),
+        event_source_url: "https://monarcadasassinaturas.com",
+        action_source: "website",
+        event_id: id,
+        user_data: {
+          ...(email ? { em: hashSHA256(email) } : {}),
+          ...(phone ? { ph: hashSHA256(phone) } : {}),
+        },
+        custom_data: {
+          currency: moeda,
+          value: valor,
+          contents,
+          content_type: "product",
+        },
       },
-      custom_data: { currency: moeda, value: valor, contents, content_type: "product" }
-    }],
-    ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {})
+    ],
+    ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {}),
   };
 
+  // Envio para Facebook Pixel
   try {
     const res = await fetch(
       `https://graph.facebook.com/v18.0/${FB_PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`,
-      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(eventData) }
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eventData),
+      }
     );
     const result = await res.json();
     console.log("Facebook Pixel resposta:", result);
@@ -94,5 +119,6 @@ exports.handler = async (event) => {
     console.error("Erro ao enviar para Facebook:", err);
   }
 
+  console.log("Webhook processado, retornando 200 para Kiwify");
   return { statusCode: 200, body: JSON.stringify({ success: true }) };
 };
