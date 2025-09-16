@@ -26,3 +26,4 @@
 
 [functions]
 node_bundler = "esbuild" # se ainda não tiver
+external_node_modules = ["node-fetch"]
