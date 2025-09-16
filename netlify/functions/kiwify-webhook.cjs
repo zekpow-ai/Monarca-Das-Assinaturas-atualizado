@@ -1,5 +1,4 @@
 const crypto = require("crypto");
-const fetch = require("node-fetch"); // garante fetch no Netlify
 
 // Variáveis de ambiente
 const KIWIFY_SECRET = process.env.KIWIFY_SECRET;
@@ -18,11 +17,11 @@ function hashSHA256(value) {
 
 // Validação da assinatura enviada pela Kiwify
 function validateSignature(signature, order) {
-  if (!signature) return true; // passa se não vier assinatura
+  if (!signature) return true; // se não houver, passa
   try {
     const payload = JSON.stringify(order);
     const expected = crypto
-      .createHmac("sha256", KIWIFY_SECRET) // corrigido para sha256
+      .createHmac("sha256", KIWIFY_SECRET) // corrigido para SHA256
       .update(payload)
       .digest("hex");
 
@@ -127,7 +126,10 @@ exports.handler = async (event) => {
     ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {}),
   };
 
-  console.log("Payload enviado ao Facebook:", JSON.stringify(eventData, null, 2));
+  console.log(
+    "Payload enviado ao Facebook:",
+    JSON.stringify(eventData, null, 2)
+  );
 
   try {
     const res = await fetch(
@@ -138,6 +140,7 @@ exports.handler = async (event) => {
         body: JSON.stringify(eventData),
       }
     );
+
     const result = await res.json();
     console.log("Facebook Pixel resposta:", result);
   } catch (err) {
